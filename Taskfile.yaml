@@ -1,0 +1,193 @@
+version: '3'
+
+dotenv: ['.env']
+
+vars:
+  APP_NAME: todoapp
+  APP_VERSION: 0.0.1-SNAPSHOT
+  MAIN_CLASS: io/shaama/todoapp/TodoappApplication.java
+
+tasks:
+  # Default task
+  default:
+    desc: "Show available tasks"
+    cmds:
+      - task --list
+
+  # Build tasks for each profile (just for different JAR names)
+  build:stdio:
+    desc: "Build application for STDIO profile"
+    cmds:
+      - ./gradlew clean build -Pprofile=stdio -Pversion={{.APP_VERSION}}
+
+  build:sse:
+    desc: "Build application for SSE profile"
+    cmds:
+      - ./gradlew clean build -Pprofile=sse -Pversion={{.APP_VERSION}}
+
+  build:streamable:
+    desc: "Build application for Streamable profile"
+    cmds:
+      - ./gradlew clean build -x test -Pprofile=streamable -Pversion={{.APP_VERSION}}
+
+
+
+
+  dev:sse:
+    desc: "Run application in development mode with SSE profile"
+    cmds:
+      - ./gradlew bootRun --args='--spring.profiles.active=sse'
+    interactive: true
+
+  dev:streamableold:
+    desc: "Run application in development mode with Streamable profile"
+    cmds:
+      - ./gradlew bootRun --args='--spring.profiles.active=streamable'
+    interactive: true
+
+  dev:streamable:
+    desc: "Run application in development mode with Streamable profile"
+    env:
+      JAVA_TOOL_OPTIONS: "-XX:+TieredCompilation -XX:TieredStopAtLevel=1 -XX:+UseSerialGC -XX:MaxRAMPercentage=80 -Djava.security.egd=file:/dev/./urandom -XX:+UnlockExperimentalVMOptions "
+      SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION: "true"
+    cmds:
+      - ./gradlew bootRun --args='--spring.profiles.active=streamable'
+    interactive: true
+
+  # Run built JAR tasks
+  dev:stdio:
+    desc: "Run the built JAR file with STDIO profile"
+    deps:
+      - build:stdio
+    cmds:
+      - java -Dspring.profiles.active=stdio -jar build/libs/{{.APP_NAME}}_stdio-{{.APP_VERSION}}.jar
+    interactive: true
+
+
+
+  # Convenience tasks
+  clean:
+    desc: "Clean build artifacts"
+    cmds:
+      - ./gradlew clean
+
+  test:
+    desc: "Run tests"
+    cmds:
+      - ./gradlew test
+
+
+
+# Not working for http streaming in aws lambda
+  infra:aws-lambda:reset:
+    desc: "reset"
+    cmds:
+      - task: infra:aws-lambda:destroy
+      - task: infra:aws-lambda:setup
+      - task: infra:aws-lambda:deploy
+
+  infra:aws-lambda:setup:
+    desc: "Setup AWS Lambda infrastructure"
+    cmds:
+      - ./gradlew infraCli -PinfraArgs="aws-lambda setup config/lambdaconfig.yaml"
+
+  infra:aws-lambda:deploy:
+    desc: "Deploy AWS Lambda"
+    cmds:
+      - ./gradlew infraCli -PinfraArgs="aws-lambda deploy config/lambdaconfig.yaml"
+
+  infra:aws-lambda:logs:
+    desc: "show logs for AWS Lambda"
+    cmds:
+      - ./gradlew infraCli -PinfraArgs="aws-lambda logs config/lambdaconfig.yaml"
+
+
+  infra:aws-lambda:destroy:
+    desc: "Destroy AWS Lambda infrastructure"
+    cmds:
+      - ./gradlew infraCli -PinfraArgs="aws-lambda destroy config/lambdaconfig.yaml"
+
+
+  # AWS Fargate infrastructure tasks
+  infra:aws-fargate:reset:
+    desc: "Reset AWS Fargate infrastructure"
+    cmds:
+      - task: infra:aws-fargate:destroy
+      - task: infra:aws-fargate:setup
+      - task: infra:aws-fargate:deploy
+
+  infra:aws-fargate:setup:
+    desc: "Setup AWS Fargate infrastructure"
+    cmds:
+      - ./gradlew infraCli -PinfraArgs="aws-fargate setup config/fargateconfig.yaml"
+
+  infra:aws-fargate:deploy:
+    desc: "Deploy to AWS Fargate"
+    cmds:
+      - ./gradlew infraCli -PinfraArgs="aws-fargate deploy config/fargateconfig.yaml"
+
+  infra:aws-fargate:logs:
+    desc: "Show logs for AWS Fargate"
+    cmds:
+      - ./gradlew infraCli -PinfraArgs="aws-fargate logs config/fargateconfig.yaml"
+
+  infra:aws-fargate:destroy:
+    desc: "Destroy AWS Fargate infrastructure"
+    cmds:
+      - ./gradlew infraCli -PinfraArgs="aws-fargate destroy config/fargateconfig.yaml"
+
+  # Azure Container Apps infrastructure tasks
+  infra:azure-container-apps:reset:
+    desc: "Reset Azure Container Apps infrastructure"
+    cmds:
+      - task: infra:azure-container-apps:destroy
+      - task: infra:azure-container-apps:setup
+      - task: infra:azure-container-apps:deploy
+
+  infra:azure-container-apps:setup:
+    desc: "Setup Azure Container Apps infrastructure"
+    cmds:
+      - ./gradlew infraCli -PinfraArgs="azure-container-apps setup config/azurecontainerappsconfig.yaml"
+
+  infra:azure-container-apps:deploy:
+    desc: "Deploy to Azure Container Apps"
+    cmds:
+      - ./gradlew infraCli -PinfraArgs="azure-container-apps deploy config/azurecontainerappsconfig.yaml"
+
+  infra:azure-container-apps:logs:
+    desc: "Show logs for Azure Container Apps"
+    cmds:
+      - ./gradlew infraCli -PinfraArgs="azure-container-apps logs config/azurecontainerappsconfig.yaml"
+
+  infra:azure-container-apps:destroy:
+    desc: "Destroy Azure Container Apps infrastructure"
+    cmds:
+      - ./gradlew infraCli -PinfraArgs="azure-container-apps destroy config/azurecontainerappsconfig.yaml"
+
+  # GCP Cloud Run infrastructure tasks
+  infra:gcp-cloudrun:reset:
+    desc: "Reset GCP Cloud Run infrastructure"
+    cmds:
+      - task: infra:gcp-cloudrun:destroy
+      - task: infra:gcp-cloudrun:setup
+      - task: infra:gcp-cloudrun:deploy
+
+  infra:gcp-cloudrun:setup:
+    desc: "Setup GCP Cloud Run infrastructure"
+    cmds:
+      - ./gradlew infraCli -PinfraArgs="gcp-cloudrun setup config/cloudrunconfig.yaml"
+
+  infra:gcp-cloudrun:deploy:
+    desc: "Deploy to GCP Cloud Run"
+    cmds:
+      - ./gradlew infraCli -PinfraArgs="gcp-cloudrun deploy config/cloudrunconfig.yaml"
+
+  infra:gcp-cloudrun:logs:
+    desc: "Show logs for GCP Cloud Run"
+    cmds:
+      - ./gradlew infraCli -PinfraArgs="gcp-cloudrun logs config/cloudrunconfig.yaml"
+
+  infra:gcp-cloudrun:destroy:
+    desc: "Destroy GCP Cloud Run infrastructure"
+    cmds:
+      - ./gradlew infraCli -PinfraArgs="gcp-cloudrun destroy config/cloudrunconfig.yaml"
