@@ -1,26 +1,18 @@
 package io.shaama.todoapp.chat;
 
 import io.shaama.todoapp.todo.TodoTools;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.vertexai.gemini.VertexAiGeminiChatModel;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 @Slf4j
 public class ChatService {
 
-    private final VertexAiGeminiChatModel vertexAiGeminiChatModel;
-    private final TodoTools todoTools;
     private final ChatClient chatClient;
-
-    public ChatService(VertexAiGeminiChatModel vertexAiGeminiChatModel, TodoTools todoTools) {
-        this.vertexAiGeminiChatModel = vertexAiGeminiChatModel;
-        this.todoTools = todoTools;
-        chatClient = ChatClient.builder(vertexAiGeminiChatModel)
-                .defaultTools(todoTools)
-                .build();
-    }
 
     public ChatBotResponse askQuestion(ChatBotRequest chatBotRequest) {
         String question = chatBotRequest.question();

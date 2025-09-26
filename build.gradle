@@ -28,21 +28,6 @@ ext {
     set('springAiVersion', "1.1.0-M1")
 }
 
-// Configure JAR naming based on profile
-jar {
-    enabled = false
-}
-
-bootJar {
-    if (project.hasProperty('profile')) {
-        def activeProfile = project.property('profile')
-        archiveBaseName = "${project.name}_${activeProfile}"
-    } else {
-        archiveBaseName = "${project.name}_stdio"
-    }
-    archiveVersion = project.version
-}
-
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-web") {
         exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-core"
