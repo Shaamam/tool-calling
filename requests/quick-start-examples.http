@@ -1,0 +1,106 @@
+### Quick Start Examples for Todo App API
+### Use these requests to quickly test the main functionality
+
+### ================================
+### GETTING STARTED
+### ================================
+
+### 1. Welcome - Test the connection
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Hello, how can you help me with my todos?"
+}
+
+### ================================
+### BASIC TODO CREATION
+### ================================
+
+### 2. Create your first todo
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "I need to buy milk and bread"
+}
+
+### 3. Create a work task
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Prepare presentation for Monday meeting"
+}
+
+### ================================
+### VIEW YOUR TODOS
+### ================================
+
+### 4. See all your todos
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "What todos do I have?"
+}
+
+### 5. Check work tasks only
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Show me my work tasks"
+}
+
+### ================================
+### COMPLETE TASKS
+### ================================
+
+### 6. Mark a task as done
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "I finished buying milk and bread"
+}
+
+### ================================
+### DELETE TASKS
+### ================================
+
+### 7. Remove a specific task
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Delete the presentation task"
+}
+
+### ================================
+### ADVANCED EXAMPLES
+### ================================
+
+### 8. Create multiple todos at once
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "I need to schedule a doctor appointment, buy groceries, and finish the quarterly report"
+}
+
+### 9. Get todos by category
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "What shopping items do I need to buy?"
+}
+
+### 10. Clear all todos (be careful!)
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Delete all my todos"
+}

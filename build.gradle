@@ -1,0 +1,93 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '3.5.5'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'io.shaama'
+version = '0.0.1-SNAPSHOT'
+description = 'A Model Context Protocol (MCP) server that provides todo app using the Postgres DB. This server supports three different transport protocols: STDIO, SSE (Server-Sent Events), and Streamable HTTP.'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(21)
+	}
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://repo.spring.io/snapshot' }
+    maven {
+        name = 'Central Portal Snapshots'
+        url = 'https://central.sonatype.com/repository/maven-snapshots/'
+    }
+}
+
+ext {
+    set('springAiVersion', "1.1.0-M1")
+}
+
+// Configure JAR naming based on profile
+jar {
+    enabled = false
+}
+
+bootJar {
+    if (project.hasProperty('profile')) {
+        def activeProfile = project.property('profile')
+        archiveBaseName = "${project.name}_${activeProfile}"
+    } else {
+        archiveBaseName = "${project.name}_stdio"
+    }
+    archiveVersion = project.version
+}
+
+dependencies {
+    implementation("org.springframework.boot:spring-boot-starter-web") {
+        exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-core"
+    }
+    implementation("org.apache.tomcat.embed:tomcat-embed-core:10.1.41")
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'com.h2database:h2'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    implementation 'org.springframework.ai:spring-ai-starter-model-vertex-ai-gemini'
+
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+dependencyManagement {
+    imports {
+        mavenBom "org.springframework.ai:spring-ai-bom:${springAiVersion}"
+    }
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+tasks.register("npmInstall", Exec) {
+    workingDir = file('frontend')
+    commandLine = ['npm', 'install']
+}
+
+tasks.register("npmBuild", Exec) {
+    dependsOn 'npmInstall'
+    workingDir = file('frontend')
+    commandLine = ['npm', 'run', 'build']
+}
+
+tasks.register('copyFrontendBuild', Copy) {
+    dependsOn 'npmBuild'
+    from file('frontend/build')
+    into file('src/main/resources/static')
+}
+
+tasks.named('processResources') {
+    dependsOn 'copyFrontendBuild'
+}

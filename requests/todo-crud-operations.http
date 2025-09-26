@@ -1,0 +1,282 @@
+### Todo App CRUD Operations via Natural Language Chat
+### Base URL: http://localhost:8080/api/v1/simple-chat
+
+### ================================
+### CREATE TODOS - Various Examples
+### ================================
+
+### Create a work-related todo
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "I need to finish the quarterly report by Friday"
+}
+
+### Create a shopping todo
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Add buy groceries for dinner to my shopping list"
+}
+
+### Create a health-related todo
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Schedule dentist appointment next week"
+}
+
+### Create a personal todo
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Call mom to wish her happy birthday"
+}
+
+### Create a study-related todo
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Review Spring AI documentation for tomorrow's presentation"
+}
+
+### Create a home-related todo
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Fix the leaky faucet in the kitchen"
+}
+
+### Create multiple todos in one request
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "I need to buy milk and bread from the store, then call the insurance company about my claim"
+}
+
+### ================================
+### READ TODOS - Various Queries
+### ================================
+
+### Get all todos
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Show me all my todos"
+}
+
+### Get all pending/incomplete todos
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "What tasks do I need to complete?"
+}
+
+### Get completed todos
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Show me my completed tasks"
+}
+
+### Get todos by category - Work
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Show me my work-related tasks"
+}
+
+### Get todos by category - Shopping
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "What do I need to buy?"
+}
+
+### Get todos by category - Health
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Show me my health appointments and tasks"
+}
+
+### Get todos by category - Personal
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "What personal tasks do I have?"
+}
+
+### Get specific todo by mentioning details
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Do I have anything about the quarterly report?"
+}
+
+### ================================
+### UPDATE TODOS - Mark as Complete
+### ================================
+
+### Mark a specific todo as completed
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Mark the quarterly report task as completed"
+}
+
+### Mark shopping task as done
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "I finished buying groceries, mark it as done"
+}
+
+### Update todo details
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Change my dentist appointment task to include the specific date: March 15th"
+}
+
+### Mark multiple tasks as complete
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "I completed the grocery shopping and called my mom, please update those tasks"
+}
+
+### ================================
+### DELETE TODOS - Various Options
+### ================================
+
+### Delete a specific todo
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Remove the task about fixing the faucet"
+}
+
+### Delete completed todos
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Delete all completed tasks"
+}
+
+### Delete todos by category
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Remove all my shopping tasks"
+}
+
+### Delete all todos (use with caution!)
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Clear all my todos"
+}
+
+### ================================
+### COMPLEX OPERATIONS
+### ================================
+
+### Search and filter todos
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Show me all incomplete work tasks from this week"
+}
+
+### Get todo summary/statistics
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Give me a summary of my todos - how many completed vs pending"
+}
+
+### Bulk operations
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Mark all my shopping tasks as completed"
+}
+
+### Category-based queries
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "What are my priorities for today? Show me urgent tasks"
+}
+
+### Natural language todo management
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "I have a meeting with the client tomorrow at 2 PM, need to prepare the presentation and review the contract"
+}
+
+### ================================
+### ERROR HANDLING & EDGE CASES
+### ================================
+
+### Try to update non-existent todo
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Mark the non-existent task as completed"
+}
+
+### Try to delete non-existent todo
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Delete the task about flying to mars"
+}
+
+### Ambiguous request
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Update that task"
+}
+
+### Empty or unclear request
+POST http://localhost:8080/api/v1/simple-chat/ask
+Content-Type: application/json
+
+{
+  "question": "Help me with todos"
+}
